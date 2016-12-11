@@ -6,12 +6,14 @@
 package formularios;
 
 import conexion.conexion;
+import identidades.Material_i;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import javax.swing.JOptionPane;
+import reprository.Material_Repository;
 
 /**
  *
@@ -20,7 +22,7 @@ import javax.swing.JOptionPane;
 public class Material extends javax.swing.JFrame {
     conexion conecta = new conexion();
     Connection cn = conecta.conexion();
-    
+    Material_Repository mr = new Material_Repository();
 
     /**
      * Creates new form Material
@@ -209,10 +211,14 @@ public class Material extends javax.swing.JFrame {
     }//GEN-LAST:event_txtidKeyPressed
 
     private void bnconsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bnconsultarActionPerformed
-        mostrarDatos(txtnombre.getText());
+        
         bnmodificar.setEnabled(true);
         bnguardar.setEnabled(false);
         bneliminar.setEnabled(true);
+        Material_i mate = (Material_i)mr.getMaterialNombre(txtnombre.getText());
+        txtid.setText(Integer.toString(mate.getId_material()));
+        txtnombre.setText(mate.getNombre());
+        
     }//GEN-LAST:event_bnconsultarActionPerformed
 
     private void txtnombreKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtnombreKeyTyped
@@ -223,51 +229,28 @@ public class Material extends javax.swing.JFrame {
     }//GEN-LAST:event_txtnombreKeyTyped
 
     private void bnguardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bnguardarActionPerformed
-        PreparedStatement pst = null;
-            try{
-               pst = cn.prepareStatement("INSERT INTO materiales(nombre)VALUES(?)");
-               
-               pst.setString(1, txtnombre.getText().toUpperCase());
-                                               
-               JOptionPane.showMessageDialog(null,"registro grabado exitosamente");
+       Material_i mate = new Material_i (txtnombre.getText());
+       mr.Ingresar(mate);
                 Limpiar(); 
-                pst.executeUpdate();
-            }catch (SQLException ex){         
-             System.out.println(ex.getMessage());
-    }
+                
+    
     }//GEN-LAST:event_bnguardarActionPerformed
 
     private void bnmodificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bnmodificarActionPerformed
         bnguardar.setEnabled(true);
         bncancelar.setEnabled(true);
-        PreparedStatement pst = null;
-        try{
-            pst=cn.prepareStatement("UPDATE materiales set nombre=? where id_material="+txtid.getText());
-
-            pst.setString(1,txtnombre.getText().toUpperCase());
-
-            JOptionPane.showMessageDialog(null, "registro modificado exitosamente");
+        Material_i mate = new Material_i (txtnombre.getText());
+        mr.Modificar(Integer.parseInt(txtid.getText()), mate);
             Limpiar();
-            pst.executeQuery();
-        }catch(SQLException ex){
-            System.out.println(ex.getMessage());
-        }
+            
     }//GEN-LAST:event_bnmodificarActionPerformed
 
     private void bneliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bneliminarActionPerformed
         bncancelar.setEnabled(true);
         bnguardar.setEnabled(true);
-        PreparedStatement pst = null;
-        try{
-            pst=cn.prepareStatement("delete from materiales where id_material=?");
-            pst.setInt(1, Integer.parseInt(txtid.getText()));
-
-            JOptionPane.showMessageDialog(null,"registro eliminadfo exitosamente");
+        mr.Eliminar(Integer.parseInt(txtid.getText()));
             Limpiar();
-            pst.executeQuery();
-        }catch(SQLException ex){
-            System.out.println(ex.getMessage());
-        }
+            
     }//GEN-LAST:event_bneliminarActionPerformed
 
     private void bncancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bncancelarActionPerformed
@@ -280,21 +263,7 @@ public class Material extends javax.swing.JFrame {
        
     }//GEN-LAST:event_txtnombreActionPerformed
 
-     public void mostrarDatos(String valor){
-     String sql ="";
-     sql="select * from materiales where nombre='"+ valor + "'";
-     try{
-           Statement st = cn.createStatement();
-           ResultSet rs= st.executeQuery(sql);
-           while(rs.next()){
-               txtid.setText(rs.getString(1));                            
-              txtnombre.setText(rs.getString(2));
-              
-           }
-        }catch(SQLException ex){
-           System.out.println(ex.getMessage());
-        }
-    }
+     
     /**
      * @param args the command line arguments
      */

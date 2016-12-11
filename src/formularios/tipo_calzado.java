@@ -6,19 +6,23 @@
 package formularios;
 
 import conexion.conexion;
+import identidades.Tipo_Calzado_i;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import javax.swing.JOptionPane;
+import reprository.Tipo_Repository;
 
 /**
  *
  * @author Administrador
  */
 public class tipo_calzado extends javax.swing.JFrame {
-    
+    conexion conecta = new conexion();
+    Connection cn = conecta.conexion();
+    Tipo_Repository tr = new Tipo_Repository();
 
     /**
      * Creates new form tipo_calzado
@@ -28,6 +32,10 @@ public class tipo_calzado extends javax.swing.JFrame {
         Limpiar();
         this.setLocationRelativeTo(null);
         this.setResizable(false);
+    }
+    private void Limpiar() {        
+        txtcodigo.setText("");
+        txtnombre.setText("");        
     }
 
     /**
@@ -172,18 +180,10 @@ public class tipo_calzado extends javax.swing.JFrame {
     }//GEN-LAST:event_txtnombreKeyTyped
 
     private void bnguardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bnguardarActionPerformed
-        PreparedStatement pst = null;
-            try{
-               pst = cn.prepareStatement("INSERT INTO tipo_calzado(nombre)VALUES(?)");
-               
-               pst.setString(1, txtnombre.getText().toUpperCase());                        
-               
-               JOptionPane.showMessageDialog(null,"registro grabado exitosamente");
-                Limpiar();
-                pst.executeUpdate();     
-            }catch (SQLException ex){
-                System.out.println(ex.getMessage());
-    }
+         Tipo_Calzado_i tip = new Tipo_Calzado_i(txtnombre.getText()); 
+         tr.Ingresar(tip);
+        Limpiar();
+                
     }//GEN-LAST:event_bnguardarActionPerformed
 
     private void bncancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bncancelarActionPerformed
@@ -194,34 +194,18 @@ public class tipo_calzado extends javax.swing.JFrame {
     private void bnmodificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bnmodificarActionPerformed
          bnguardar.setEnabled(true);
         bncancelar.setEnabled(true);
-        PreparedStatement pst = null;
-        try{
-            pst=cn.prepareStatement("UPDATE tipo_calzado set nombre=? where codigo="+txtcodigo.getText());
+        Tipo_Calzado_i tip = new Tipo_Calzado_i(txtnombre.getText()); 
+         tr.Modificar(Integer.parseInt(txtcodigo.getText()), tip);
+        Limpiar();
             
-            pst.setString(1,txtnombre.getText().toUpperCase());           
-            
-            JOptionPane.showMessageDialog(null, "registro modificado exitosamente");
-            Limpiar();
-            pst.executeQuery();
-        }catch(SQLException ex){
-            System.out.println(ex.getMessage());
-        }
     }//GEN-LAST:event_bnmodificarActionPerformed
 
     private void bneliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bneliminarActionPerformed
         bncancelar.setEnabled(true);
         bnguardar.setEnabled(true);
-        PreparedStatement pst = null;
-        try{
-            pst=cn.prepareStatement("delete from tipo_calzado where codigo=?");
-            pst.setInt(1, Integer.parseInt(txtcodigo.getText()));
+         tr.Eliminar(Integer.parseInt(txtcodigo.getText()));
+        Limpiar();
             
-            JOptionPane.showMessageDialog(null,"registro eliminadfo exitosamente");
-            Limpiar();
-            pst.executeQuery();
-        }catch(SQLException ex){
-            System.out.println(ex.getMessage());
-        }
     }//GEN-LAST:event_bneliminarActionPerformed
 
     private void txtcodigoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtcodigoActionPerformed
@@ -229,38 +213,15 @@ public class tipo_calzado extends javax.swing.JFrame {
     }//GEN-LAST:event_txtcodigoActionPerformed
 
     private void bnconsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bnconsultarActionPerformed
-        mostrarDatos(txtnombre.getText());
+        
        bnmodificar.setEnabled(true);
        bnguardar.setEnabled(false);
        bneliminar.setEnabled(true);
+       Tipo_Calzado_i tip = (Tipo_Calzado_i)tr.getTipoNombre(txtnombre.getText());
+       txtcodigo.setText(Integer.toString(tip.getCodigo()));
+       txtnombre.setText(tip.getNombre());
     }//GEN-LAST:event_bnconsultarActionPerformed
-
-    conexion conecta = new conexion();
-    Connection cn = conecta.conexion();
-    
-    
-    private void Limpiar() {
-        
-        txtcodigo.setText("");
-        txtnombre.setText("");
-        
-    }
-   public void mostrarDatos(String valor){
-     String sql ="";
-     sql="select * from tipo_calzado where nombre='"+ valor + "'";
-     try{
-           Statement st = cn.createStatement();
-           ResultSet rs= st.executeQuery(sql);
-           while(rs.next()){
-               txtcodigo.setText(rs.getString(1));                            
-              txtnombre.setText(rs.getString(2));
-              
-           }
-        }catch(SQLException ex){
-           System.out.println(ex.getMessage());
-        }
-    }
-   
+               
     /**
      * @param args the command line arguments
      */

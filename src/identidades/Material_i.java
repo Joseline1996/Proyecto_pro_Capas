@@ -17,6 +17,9 @@ public class Material_i {
         this.id_material= id_material;
         this.nombre= nomate;
     }
+    public Material_i(String nomate){
+        this.nombre= nomate;
+    }
 
     public int getId_material() {
         return id_material;

@@ -6,12 +6,14 @@
 package formularios;
 
 import conexion.conexion;
+import identidades.Ciudad;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import javax.swing.JOptionPane;
+import reprository.Ciudad_Repository;
 
 /**
  *
@@ -20,6 +22,7 @@ import javax.swing.JOptionPane;
 public class Ciudades extends javax.swing.JFrame {
     conexion conecta = new conexion();
     Connection cn = conecta.conexion();
+    Ciudad_Repository ciure = new Ciudad_Repository();
 
     /**
      * Creates new form Ciudades
@@ -187,7 +190,8 @@ public class Ciudades extends javax.swing.JFrame {
     }//GEN-LAST:event_txtidActionPerformed
 
     private void bnguardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bnguardarActionPerformed
-        
+        Ciudad ciu = new Ciudad(txtnombre.getText());
+        ciure.Ingresar(ciu);
                 Limpiar();
                 
     }//GEN-LAST:event_bnguardarActionPerformed
@@ -199,7 +203,7 @@ public class Ciudades extends javax.swing.JFrame {
     private void bneliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bneliminarActionPerformed
         bncancelar.setEnabled(true);
         bnguardar.setEnabled(true);
-        
+        ciure.Eliminar(Integer.parseInt(txtid.getText()));
             Limpiar();
             
     }//GEN-LAST:event_bneliminarActionPerformed
@@ -207,6 +211,8 @@ public class Ciudades extends javax.swing.JFrame {
     private void bnmodificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bnmodificarActionPerformed
         bnguardar.setEnabled(true);
         bncancelar.setEnabled(true);
+        Ciudad ciu = new Ciudad(txtnombre.getText());
+        ciure.Modificar(Integer.parseInt(txtid.getText()), ciu);       
             Limpiar();
             
     }//GEN-LAST:event_bnmodificarActionPerformed
@@ -216,6 +222,9 @@ public class Ciudades extends javax.swing.JFrame {
        bnmodificar.setEnabled(true);
        bnguardar.setEnabled(false);
        bneliminar.setEnabled(true);
+       Ciudad ciu =(Ciudad)ciure.getCiudadNombre(txtnombre.getText());
+       txtid.setText(Integer.toString(ciu.getId_ciudad()));
+       txtnombre.setText(ciu.getNombre());
     }//GEN-LAST:event_bnconsultarActionPerformed
 
     /**

@@ -17,6 +17,9 @@ public class Marca_i {
         this.id_marca= id_marca;
         this.nombre= nombmarca;
     }
+    public Marca_i (String nombmarca){      
+        this.nombre= nombmarca;
+    }
 
     public int getId_marca() {
         return id_marca;

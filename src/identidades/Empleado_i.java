@@ -27,6 +27,14 @@ public class Empleado_i {
         this.sexo=sexoemple;
         this.ciudad= ciudademple;
     }
+    public Empleado_i ( String cedulaemple,String nomemple,String diremple,String telefemple,String sexoemple,Ciudad ciudademple){       
+        this.cedula= cedulaemple;
+        this.nombre= nomemple; 
+        this.direccion= diremple;
+        this.telefono=telefemple;       
+        this.sexo=sexoemple;
+        this.ciudad= ciudademple;
+    }
 
     public int getId_empleado() {
         return id_empleado;

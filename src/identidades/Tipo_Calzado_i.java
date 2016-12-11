@@ -17,6 +17,9 @@ public class Tipo_Calzado_i {
         this.codigo= cod;
         this.nombre= nomtipo;
     }
+    public Tipo_Calzado_i (String nomtipo){        
+        this.nombre= nomtipo;
+    }
 
     public int getCodigo() {
         return codigo;

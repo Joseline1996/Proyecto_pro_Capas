@@ -6,12 +6,15 @@
 package formularios;
 
 import conexion.conexion;
+import identidades.Cliente_i;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import reprository.Cliente_Repository;
 
 
 
@@ -22,6 +25,7 @@ import javax.swing.table.DefaultTableModel;
 public class Registro extends javax.swing.JFrame {
    conexion conecta = new conexion();
     Connection cn = conecta.conexion();
+    Cliente_Repository clre = new Cliente_Repository();
 
     /**
      * Creates new form Registro
@@ -189,54 +193,52 @@ public class Registro extends javax.swing.JFrame {
     }//GEN-LAST:event_bncancelarActionPerformed
 
     private void bnbuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bnbuscarActionPerformed
-        SQL();
+        Consultar();
         Limpiar();
     }//GEN-LAST:event_bnbuscarActionPerformed
 
-    public void SQL(){
-        String sql = "";
-        if(txtcedula.getText().equals("") && cedula.isSelected()){
-            sql = "SELECT clientes.id_cliente,clientes.cedula,clientes.nombre,clientes.direccion,clientes.telefono,clientes.sexo,ciudades.nombre FROM clientes" 
-                + " INNER JOIN ciudades ON clientes.id_ciudad = ciudades.id_ciudad ";
-                
+     public int ObtenerSeleccion(){
+        if(cedula.isSelected()){
+            return 1;
         }
         else{
-            if(cedula.isSelected()){
-                sql = "SELECT clientes.id_cliente,clientes.cedula,clientes.nombre,clientes.direccion,clientes.telefono,clientes.sexo,ciudades.nombre FROM clientes"                 
-                + " INNER JOIN ciudades ON clientes.id_ciudad = ciudades.id_ciudad WHERE clientes.cedula ='" + txtcedula.getText() + "'";
+            if(nombre.isSelected()){
+                return 2;
             }
-            else{
-                
-                    if(nombre.isSelected()){
-                    sql = "SELECT clientes.id_cliente,clientes.cedula,clientes.nombre,clientes.direccion,clientes.telefono,clientes.sexo,ciudades.nombre FROM clientes"                      
-                    + " INNER JOIN ciudades ON clientes.id_ciudad = ciudades.id_ciudad WHERE clientes.nombre ='" + txtnombre.getText() + "'" ;
-                }            
-                
-                
-                
+            
+        }
+        return 0;
+    }
+    public String ObtenerDatos(){
+        if(cedula.isSelected()){
+            return txtcedula.getText();
+        }
+        else{
+            if(nombre.isSelected()){
+                return txtnombre.getText();
             }
         }
-        Consultar(sql);        
+        return "";
     }
     
-    public void Consultar(String sql){
+    
+    public void Consultar(){
+        List<Cliente_i> clientes = clre.getClientes(ObtenerDatos(),ObtenerSeleccion());
         DefaultTableModel modelo = (DefaultTableModel) tab.getModel();
         modelo.setRowCount(0);
         Object [] tabla = new Object[7];
-        try{
-            PreparedStatement pst = cn.prepareCall(sql);
-            ResultSet rs = pst.executeQuery();
-            if(rs.next()){
-                do{
-                    tabla[0] = rs.getString(1);
-                    tabla[1] = rs.getString(2);
-                    tabla[2] = rs.getString(3);
-                    tabla[3] = rs.getString(4);
-                    tabla[4] = rs.getString(5);
-                    tabla[5] = rs.getString(6);
-                    tabla[6] = rs.getString(7);
+        
+            if(!clientes.isEmpty()){
+                for(Cliente_i cliente : clientes){
+                    tabla[0] = cliente.getId_cliente();
+                    tabla[1] = cliente.getCedula();
+                    tabla[2] = cliente.getNombre();
+                    tabla[3] = cliente.getDireccion();
+                    tabla[4] = cliente.getTelefono();
+                    tabla[5] = cliente.getSexo();
+                    tabla[6] = cliente.getCiudad().getNombre();
                     modelo.addRow(tabla);
-                }while(rs.next());
+                }
                 tab.setModel(modelo);
                             
             }
@@ -244,10 +246,7 @@ public class Registro extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(null, "NO SE ENCONTRO VALOR","NOT FOUND",JOptionPane.INFORMATION_MESSAGE);
             }
             
-        }
-        catch(SQLException exc){
-            JOptionPane.showMessageDialog(null, exc.getMessage(),"WARNING",JOptionPane.ERROR_MESSAGE);
-        }
+        
     }
      
     /**

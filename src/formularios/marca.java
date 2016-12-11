@@ -6,19 +6,23 @@
 package formularios;
 
 import conexion.conexion;
+import identidades.Marca_i;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import javax.swing.JOptionPane;
+import reprository.Marca_Repository;
 
 /**
  *
  * @author Administrador
  */
 public class marca extends javax.swing.JFrame {
-   
+    conexion conecta = new conexion();
+    Connection cn = conecta.conexion();
+   Marca_Repository mare= new Marca_Repository();
 
     /**
      * Creates new form marca
@@ -29,7 +33,11 @@ public class marca extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);
         this.setResizable(false);
     }
-
+    private void Limpiar() {       
+        txtid.setText("");
+        txtnombre.setText("");        
+    } 
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -171,18 +179,10 @@ public class marca extends javax.swing.JFrame {
     }//GEN-LAST:event_txtnombreKeyTyped
 
     private void bnguardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bnguardarActionPerformed
-        PreparedStatement pst = null;
-            try{
-               pst = cn.prepareStatement("INSERT INTO marcas(nombre)VALUES(?)");
-               
-               pst.setString(1, txtnombre.getText().toUpperCase());
-                                               
-               JOptionPane.showMessageDialog(null,"registro grabado exitosamente");
-                Limpiar(); 
-                pst.executeUpdate();
-            }catch (SQLException ex){         
-             System.out.println(ex.getMessage());
-    }
+        Marca_i mar = new Marca_i(txtnombre.getText());
+        mare.Ingresar(mar);
+        Limpiar(); 
+                
     }//GEN-LAST:event_bnguardarActionPerformed
 
     private void bncancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bncancelarActionPerformed
@@ -193,35 +193,18 @@ public class marca extends javax.swing.JFrame {
     private void bnmodificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bnmodificarActionPerformed
          bnguardar.setEnabled(true);
         bncancelar.setEnabled(true);
-        PreparedStatement pst = null;
-        try{
-            pst=cn.prepareStatement("UPDATE marcas set nombre=? where id_marca="+txtid.getText());
+        Marca_i mar = new Marca_i(txtnombre.getText());
+        mare.Modificar(Integer.parseInt(txtid.getText()), mar);
+        Limpiar();
             
-            pst.setString(1,txtnombre.getText().toUpperCase());
-           
-            
-            JOptionPane.showMessageDialog(null, "registro modificado exitosamente");
-            Limpiar();
-            pst.executeQuery();
-        }catch(SQLException ex){
-            System.out.println(ex.getMessage());
-        }
     }//GEN-LAST:event_bnmodificarActionPerformed
 
     private void bneliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bneliminarActionPerformed
         bncancelar.setEnabled(true);
         bnguardar.setEnabled(true);
-        PreparedStatement pst = null;
-        try{
-            pst=cn.prepareStatement("delete from marcas where id_marca=?");
-            pst.setInt(1, Integer.parseInt(txtid.getText()));
+        mare.Eliminar(Integer.parseInt(txtid.getText()));
+        Limpiar();
             
-            JOptionPane.showMessageDialog(null,"registro eliminadfo exitosamente");
-            Limpiar();
-            pst.executeQuery();
-        }catch(SQLException ex){
-            System.out.println(ex.getMessage());
-        }
     }//GEN-LAST:event_bneliminarActionPerformed
 
     private void txtidActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtidActionPerformed
@@ -229,39 +212,15 @@ public class marca extends javax.swing.JFrame {
     }//GEN-LAST:event_txtidActionPerformed
 
     private void bnconsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bnconsultarActionPerformed
-        mostrarDatos(txtnombre.getText());
        bnmodificar.setEnabled(true);
        bnguardar.setEnabled(false);
        bneliminar.setEnabled(true);
+       Marca_i mar = (Marca_i)mare.getMarcaNombre(txtnombre.getText());
+       txtid.setText(Integer.toString(mar.getId_marca()));
+       txtnombre.setText(mar.getNombre());
 
     }//GEN-LAST:event_bnconsultarActionPerformed
-
-    conexion conecta = new conexion();
-    Connection cn = conecta.conexion();
-    
-    
-    private void Limpiar() {
-        
-        txtid.setText("");
-        txtnombre.setText("");
-        
-    } 
-     
-     public void mostrarDatos(String valor){
-     String sql ="";
-     sql="select * from marcas where nombre='"+ valor + "'";
-     try{
-           Statement st = cn.createStatement();
-           ResultSet rs= st.executeQuery(sql);
-           while(rs.next()){
-               txtid.setText(rs.getString(1));                            
-              txtnombre.setText(rs.getString(2));
-              
-           }
-        }catch(SQLException ex){
-           System.out.println(ex.getMessage());
-        }
-    }
+                  
     /**
      * @param args the command line arguments
      */

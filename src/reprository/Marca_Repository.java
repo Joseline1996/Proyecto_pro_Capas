@@ -6,26 +6,25 @@
 package reprository;
 
 import conexion.conexion;
-import identidades.Ciudad;
+import identidades.Marca_i;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import javax.swing.JOptionPane;
 
 /**
  *
  * @author Administrador
  */
-public class Ciudad_Repository {
-    conexion conecta = new conexion();
-    Connection cn = conecta.conexion();
-    public void Ingresar(Ciudad ciudad ){
+public class Marca_Repository {
+    conexion conex = new conexion ();
+    Connection cn = conex.conexion();
+    public void Ingresar(Marca_i marca ){
         PreparedStatement pst = null;
             try{
-               pst = cn.prepareStatement("INSERT INTO ciudades(nombre)VALUES(?)");               
-               pst.setString(1,ciudad.getNombre());
+               pst = cn.prepareStatement("INSERT INTO marcas(nombre)VALUES(?)");               
+               pst.setString(1,marca.getNombre());
                               
                JOptionPane.showMessageDialog(null,"registro grabado exitosamente");
                 
@@ -36,11 +35,11 @@ public class Ciudad_Repository {
               ex.printStackTrace();
             }
     }
-    public void Modificar(int id,Ciudad ciudad){
+    public void Modificar(int id,Marca_i marca){
         PreparedStatement pst = null;
             try{
-               pst = cn.prepareStatement("UPDATE ciudades set nombre=? where id_ciudad=?");               
-               pst.setString(1,ciudad.getNombre());
+               pst = cn.prepareStatement("UPDATE marcas set nombre=? where id_marca=?");               
+               pst.setString(1,marca.getNombre());
                pst.setInt(2, id);
                               
                JOptionPane.showMessageDialog(null,"registro modificado exitosamente");
@@ -55,7 +54,7 @@ public class Ciudad_Repository {
     public void Eliminar(int id){
         PreparedStatement pst = null;
         try{
-            pst=cn.prepareStatement("DELETE from ciudades where id_ciudad=?");
+            pst=cn.prepareStatement("DELETE from marcas where id_marca=?");
             pst.setInt(1, id);
             
             JOptionPane.showMessageDialog(null,"registro eliminado exitosamente");
@@ -67,21 +66,21 @@ public class Ciudad_Repository {
            
         }
     }
-    public Ciudad getCiudadNombre(String nombre){
-        Ciudad ciu = null;         
+    public Marca_i getMarcaNombre(String nombre){
+        Marca_i mar = null;         
      try{
-         PreparedStatement pst = cn.prepareStatement("Select from ciudades where nombre=?");
+         PreparedStatement pst = cn.prepareStatement("Select from marcas where nombre=?");
             pst.setString(1, nombre);
             pst.execute();        
             ResultSet rs= pst.executeQuery();
            while(rs.next()){
-               ciu = new Ciudad(rs.getInt(1),rs.getString(2));                                          
+               mar = new Marca_i(rs.getInt(1),rs.getString(2));                                          
            }
         }catch(SQLException ex){
            JOptionPane.showMessageDialog(null, ex.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
             ex.printStackTrace();
         }
-     return ciu;
+     return mar;
     }
     
 }

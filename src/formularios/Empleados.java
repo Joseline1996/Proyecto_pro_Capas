@@ -12,6 +12,10 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import javax.swing.JOptionPane;
 import static formularios.Cliente.txtnombre;
+import identidades.Ciudad;
+import identidades.Empleado_i;
+import reprository.Ciudad_Repository;
+import reprository.Empleado_Repository;
 
 /**
  *
@@ -21,6 +25,8 @@ public class Empleados extends javax.swing.JFrame {
      int tecla;
      conexion conecta = new conexion();
     Connection cn = conecta.conexion();
+    Ciudad_Repository ciure = new Ciudad_Repository();
+    Empleado_Repository emre= new Empleado_Repository();
 
     /**
      * Creates new form Empleados
@@ -78,8 +84,8 @@ public class Empleados extends javax.swing.JFrame {
         bneliminar = new javax.swing.JButton();
         bnconsultar = new javax.swing.JButton();
         txtid = new javax.swing.JTextField();
-        jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(700, 600));
@@ -93,32 +99,32 @@ public class Empleados extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("Times New Roman", 0, 12)); // NOI18N
         jLabel2.setText("CEDULA:");
         getContentPane().add(jLabel2);
-        jLabel2.setBounds(50, 100, 70, 20);
+        jLabel2.setBounds(50, 140, 70, 20);
 
         jLabel3.setFont(new java.awt.Font("Times New Roman", 0, 12)); // NOI18N
         jLabel3.setText("NOMBRE:");
         getContentPane().add(jLabel3);
-        jLabel3.setBounds(50, 154, 70, 20);
+        jLabel3.setBounds(50, 190, 70, 20);
 
         jLabel4.setFont(new java.awt.Font("Times New Roman", 0, 12)); // NOI18N
         jLabel4.setText("DIRECCION:");
         getContentPane().add(jLabel4);
-        jLabel4.setBounds(50, 200, 70, 20);
+        jLabel4.setBounds(50, 240, 70, 20);
 
         jLabel5.setFont(new java.awt.Font("Times New Roman", 0, 12)); // NOI18N
         jLabel5.setText("TELEFONO:");
         getContentPane().add(jLabel5);
-        jLabel5.setBounds(50, 250, 70, 14);
+        jLabel5.setBounds(50, 290, 70, 14);
 
         jLabel6.setFont(new java.awt.Font("Times New Roman", 0, 12)); // NOI18N
         jLabel6.setText("SEXO:");
         getContentPane().add(jLabel6);
-        jLabel6.setBounds(50, 300, 40, 14);
+        jLabel6.setBounds(50, 340, 40, 14);
 
         jLabel7.setFont(new java.awt.Font("Times New Roman", 0, 12)); // NOI18N
         jLabel7.setText("CIUDAD:");
         getContentPane().add(jLabel7);
-        jLabel7.setBounds(50, 354, 60, 20);
+        jLabel7.setBounds(50, 400, 60, 20);
 
         txtcedula.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
@@ -126,7 +132,7 @@ public class Empleados extends javax.swing.JFrame {
             }
         });
         getContentPane().add(txtcedula);
-        txtcedula.setBounds(120, 100, 118, 30);
+        txtcedula.setBounds(130, 130, 118, 30);
 
         txtnombre.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
@@ -134,7 +140,7 @@ public class Empleados extends javax.swing.JFrame {
             }
         });
         getContentPane().add(txtnombre);
-        txtnombre.setBounds(120, 150, 261, 30);
+        txtnombre.setBounds(130, 180, 261, 30);
 
         txtdireccion.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
@@ -142,7 +148,7 @@ public class Empleados extends javax.swing.JFrame {
             }
         });
         getContentPane().add(txtdireccion);
-        txtdireccion.setBounds(120, 200, 261, 30);
+        txtdireccion.setBounds(130, 230, 261, 30);
 
         txttelefono.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
@@ -150,15 +156,15 @@ public class Empleados extends javax.swing.JFrame {
             }
         });
         getContentPane().add(txttelefono);
-        txttelefono.setBounds(120, 250, 107, 30);
+        txttelefono.setBounds(130, 280, 107, 30);
 
         cbsexo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "masculino", "femenino" }));
         cbsexo.setSelectedIndex(-1);
         getContentPane().add(cbsexo);
-        cbsexo.setBounds(120, 300, 116, 30);
+        cbsexo.setBounds(130, 340, 116, 30);
 
         getContentPane().add(cbciudad);
-        cbciudad.setBounds(120, 360, 116, 30);
+        cbciudad.setBounds(130, 390, 116, 30);
 
         bnguardar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/guardar1.png"))); // NOI18N
         bnguardar.setText("GUARDAR");
@@ -186,7 +192,7 @@ public class Empleados extends javax.swing.JFrame {
             }
         });
         getContentPane().add(txtcod);
-        txtcod.setBounds(260, 360, 44, 30);
+        txtcod.setBounds(260, 390, 44, 30);
 
         bnmodificar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/modificar.jpg"))); // NOI18N
         bnmodificar.setText("MODIFAR");
@@ -215,20 +221,24 @@ public class Empleados extends javax.swing.JFrame {
             }
         });
         getContentPane().add(bnconsultar);
-        bnconsultar.setBounds(260, 100, 45, 30);
+        bnconsultar.setBounds(260, 130, 45, 30);
 
         txtid.setEditable(false);
+        txtid.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtidActionPerformed(evt);
+            }
+        });
         getContentPane().add(txtid);
-        txtid.setBounds(320, 100, 36, 30);
-
-        jLabel8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/empleados.jpg"))); // NOI18N
-        jLabel8.setText("jLabel8");
-        getContentPane().add(jLabel8);
-        jLabel8.setBounds(-10, -10, 730, 570);
+        txtid.setBounds(150, 80, 36, 30);
 
         jLabel9.setText("jLabel9");
         getContentPane().add(jLabel9);
         jLabel9.setBounds(370, 290, 34, 14);
+
+        jLabel8.setText("ID_EMPLEADO:");
+        getContentPane().add(jLabel8);
+        jLabel8.setBounds(50, 90, 80, 20);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -284,89 +294,55 @@ public class Empleados extends javax.swing.JFrame {
     }//GEN-LAST:event_txttelefonoKeyTyped
 
     private void bnguardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bnguardarActionPerformed
-        PreparedStatement pst = null;
-   try{
-       pst = cn.prepareStatement("INSERT INTO empleados(cedula,nombre,direccion,telefono,sexo,id_ciudad)VALUES(?,?,?,?,?,?)");
-       pst.setString(1, txtcedula.getText().toUpperCase());
-       pst.setString(2, txtnombre.getText().toUpperCase());
-       pst.setString(3, txtdireccion.getText().toUpperCase()); 
-       pst.setString(4, txttelefono.getText().toUpperCase());        
-       pst.setString(5, cbsexo.getSelectedItem().toString());
-       pst.setInt(6, cbciudad.getSelectedIndex()+1);
-       pst.executeUpdate();
-       JOptionPane.showMessageDialog(null,"registro grabado exitosamente");
-       Limpiar();
-      
-    }catch (SQLException ex){
-       System.out.println(ex.getMessage());
-    } 
-   
+        Ciudad ciu = ciure.getCiudadNombre(cbciudad.getSelectedItem().toString());
+        Empleado_i emple = emre.getEmpleadoCI(txtcedula.getText(),txtnombre.getText(),txtdireccion.getText(),txttelefono.getText(),cbsexo.getSelectedItem().toString(),ciu);
+        emre.Ingresar(emple);
+        Limpiar();        
    
     }//GEN-LAST:event_bnguardarActionPerformed
 
-    public void CodigoCiudad(){
-              
-        try{
-            
-            PreparedStatement pst = cn.prepareCall("SELECT id_ciudad FROM ciudades WHERE nombre = '" + (String)cbciudad.getSelectedItem()+"'" );
-            ResultSet rs = pst.executeQuery();
-            while(rs.next()){
-                txtcod.setText(rs.getString(1));
-            }
-            
-        }
-        catch(SQLException ex){
-            JOptionPane.showMessageDialog(null,ex.getMessage(),"ERROR",JOptionPane.ERROR_MESSAGE);
-            
-        }
-    }
+    
     private void bnmodificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bnmodificarActionPerformed
         bncancelar.setEnabled(true);
         bnguardar.setEnabled(true);
-        PreparedStatement pst = null;
-        try{
-            pst=cn.prepareStatement("UPDATE empleados set cedula=?,nombre=?,direccion=?,telefono=?,sexo=?,id_ciudad=? where id_empleado="+txtid.getText());
-            pst.setString(1,txtcedula.getText().toUpperCase());
-            pst.setString(2,txtnombre.getText().toUpperCase());
-            pst.setString(3,txtdireccion.getText().toUpperCase()); 
-            pst.setString(4, txttelefono.getText().toUpperCase());
-            pst.setString(5, cbsexo.getSelectedItem().toString());
-            pst.setInt(6, cbciudad.getSelectedIndex()+1);
-            
-            pst.executeQuery();
-            JOptionPane.showMessageDialog(null, "registro modificado exitosamente");
-            Limpiar();
-        }catch(SQLException ex){
-            System.out.println(ex.getMessage());
-        }
+        Ciudad ciu = ciure.getCiudadNombre(cbciudad.getSelectedItem().toString());
+        Empleado_i emple = emre.getEmpleadoCI(txtcedula.getText(),txtnombre.getText(),txtdireccion.getText(),txttelefono.getText(),cbsexo.getSelectedItem().toString(),ciu);
+        emre.Modificar(Integer.parseInt(txtid.getText()), emple);
+        Limpiar();
+        
     }//GEN-LAST:event_bnmodificarActionPerformed
 
     private void bneliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bneliminarActionPerformed
         bncancelar.setEnabled(true);
         bnguardar.setEnabled(true);
-        PreparedStatement pst = null;
-        try{
-            pst=cn.prepareStatement("delete from empleados where id_empleado=?");
-            pst.setInt(1, Integer.parseInt(txtid.getText()));
-            pst.executeQuery();
-            JOptionPane.showMessageDialog(null,"registro eliminado exitosamente");
-            Limpiar();
-        }catch(SQLException ex){
-            System.out.println(ex.getMessage());
-        }
+        emre.Eliminar(Integer.parseInt(txtid.getText()));
+        Limpiar();
+        
     }//GEN-LAST:event_bneliminarActionPerformed
 
     private void bnconsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bnconsultarActionPerformed
-         mostrarDatos(txtcedula.getText());
+        
        bnmodificar.setEnabled(true);
        bnguardar.setEnabled(false);
        bneliminar.setEnabled(true);
+       Empleado_i emp = (Empleado_i) emre.getEmpleadoCI(txtcedula.getText());
+       txtid.setText(Integer.toString(emp.getId_empleado()));
+       txtcedula.setText(emp.getCedula());
+       txtnombre.setText(emp.getNombre());
+       txtdireccion.setText(emp.getDireccion());
+       txttelefono.setText(emp.getTelefono());
+       cbsexo.setSelectedItem(emp.getSexo());
+       cbciudad.setSelectedItem(emp.getCiudad().getNombre());
 
     }//GEN-LAST:event_bnconsultarActionPerformed
 
     private void txtcodActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtcodActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtcodActionPerformed
+
+    private void txtidActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtidActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtidActionPerformed
 
     public void cargarcbCiudad(){
         try{
@@ -380,26 +356,6 @@ public class Empleados extends javax.swing.JFrame {
          
         }catch(SQLException ex){
             
-        }
-    }
-    public void mostrarDatos(String valor){
-     String sql ="";
-     sql="select * from empleados where cedula='"+ valor + "'";
-     try{
-           Statement st = cn.createStatement();
-           ResultSet rs= st.executeQuery(sql);
-           while(rs.next()){
-               txtcedula.setText(rs.getString(2));             
-              txtnombre.setText(rs.getString(3));              
-              txtdireccion.setText(rs.getString(4)); 
-              txttelefono.setText(rs.getString(5));
-              cbsexo.setSelectedItem(rs.getString(6));
-              txtcod.setText(rs.getString(7));
-              txtid.setText(rs.getString(1));
-              llenarciudad(txtcod.getText());
-           }
-        }catch(SQLException ex){
-        
         }
     }
     public void llenarciudad(String valor){

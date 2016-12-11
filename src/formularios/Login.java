@@ -7,10 +7,12 @@
 package formularios;
 
 import conexion.conexion;
+import identidades.Login_i;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import javax.swing.JOptionPane;
+import reprository.Login_Repository;
 
 /**
  *
@@ -21,6 +23,8 @@ public class Login extends javax.swing.JFrame {
     conexion conecta = new conexion();
     Connection cn = conecta.conexion();
     ResultSet rs= null;
+    Login_Repository lr = new Login_Repository();
+
 
     /**
      * Creates new form Login
@@ -109,29 +113,9 @@ public class Login extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void bnaceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bnaceptarActionPerformed
-        String tipo_usuario="";
-        String sql= "SELECT * from login where usuario=? and contraseña=?" ;
-        try{
-            pst = cn.prepareStatement(sql);
-            pst.setString(1, txtusuario.getText());
-            pst.setString(2,txtcontraseña.getText());
-            rs= pst.executeQuery();
-            if(rs.next()){
-                //tipo_usuario = rs.getString(1);
-                JOptionPane.showMessageDialog(null,"BIENVENIDO(A)" + txtusuario.getText(), "Login\n " , JOptionPane.INFORMATION_MESSAGE);
-                Menu me = new Menu();
-                me.setVisible(true);
-                Menu.login.setText(txtusuario.getText());
-                this.setVisible(false);                
-            }
-            else{
-                JOptionPane.showMessageDialog(null, "Login o password incorrecto" , "ERROR\n" , JOptionPane.ERROR_MESSAGE);
-                
-            }
-        }catch(Exception ex ){
-            JOptionPane.showMessageDialog(null,"ERROR de conexion", "EROR\n" + ex, JOptionPane.ERROR_MESSAGE);
-            
-        }
+        Login_i lo= new Login_i (txtusuario.getText(),new String(txtcontraseña.getPassword()));
+        lr.Aceptar(lo);
+        this.setVisible(false);
     }//GEN-LAST:event_bnaceptarActionPerformed
 
     private void bncancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bncancelarActionPerformed

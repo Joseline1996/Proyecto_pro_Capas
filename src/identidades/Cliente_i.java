@@ -27,6 +27,14 @@ public class Cliente_i {
         this.sexo = sexo;
         this.ciudad= ciudad;
     }
+    public Cliente_i (String cedula,String nomcli,String direccioncli,String telecli,String sexo,Ciudad ciudad){
+        this.cedula= cedula;
+        this.nombre= nomcli;             
+        this.direccion= direccioncli;
+        this.telefono= telecli;
+        this.sexo = sexo;
+        this.ciudad= ciudad;
+    }
 
     public int getId_cliente() {
         return id_cliente;

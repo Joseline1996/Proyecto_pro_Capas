@@ -7,6 +7,8 @@ package formularios;
 
 
 import conexion.conexion;
+import identidades.Ciudad;
+import identidades.Cliente_i;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -14,6 +16,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.LinkedList;
 import javax.swing.JOptionPane;
+import reprository.Ciudad_Repository;
+import reprository.Cliente_Repository;
 
 
 public class Cliente extends javax.swing.JFrame { 
@@ -22,6 +26,8 @@ public class Cliente extends javax.swing.JFrame {
     
         conexion conecta = new conexion();
         Connection cn = conecta.conexion();
+         Cliente_Repository cr= new Cliente_Repository();
+         Ciudad_Repository ciure= new Ciudad_Repository();
           
     public Cliente() {
         initComponents();           
@@ -272,27 +278,14 @@ public class Cliente extends javax.swing.JFrame {
     }//GEN-LAST:event_txtnombreActionPerformed
 
     private void bnguardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bnguardarActionPerformed
-        
-          
+       Ciudad ciu = ciure.getCiudadNombre(cbciudad.getSelectedItem().toString());       
+       Cliente_i cli = new Cliente_i(txtcedula.getText(),txtnombre.getText(),txtdireccion.getText(),txttelefono.getText(),cbsexo.getSelectedItem().toString(),ciu);
+       cr.Ingresar(cli);               
                 Limpiar();
                 
             
     }//GEN-LAST:event_bnguardarActionPerformed
-    public void CodigoCiudad(){
-         String sql="select * from ciudades";       
-        try{
-            
-            PreparedStatement pst = cn.prepareCall("SELECT id_ciudad FROM ciudades WHERE nombre = '" + (String)cbciudad.getSelectedItem()+"'" );
-            ResultSet rs = pst.executeQuery();
-            while(rs.next()){
-                txtcod.setText(rs.getString(1));
-            }            
-        }
-        catch(SQLException ex){
-            JOptionPane.showMessageDialog(null,ex.getMessage(),"ERROR",JOptionPane.ERROR_MESSAGE);
-            
-        }
-    }
+    
     private void txtnombreKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtnombreKeyTyped
          int limite=50;
         if(txtnombre.getText().length()==limite){
@@ -352,6 +345,9 @@ public class Cliente extends javax.swing.JFrame {
     private void bnmodificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bnmodificarActionPerformed
         bnguardar.setEnabled(true);
         bncancelar.setEnabled(true);
+        Ciudad ciu = ciure.getCiudadNombre(cbciudad.getSelectedItem().toString());       
+        Cliente_i cli = new Cliente_i(txtcedula.getText(),txtnombre.getText(),txtdireccion.getText(),txttelefono.getText(),cbsexo.getSelectedItem().toString(),ciu);
+        cr.Modificar(Integer.parseInt(txtid_cliente.getText()), cli);
             Limpiar();
            
     }//GEN-LAST:event_bnmodificarActionPerformed
@@ -359,6 +355,7 @@ public class Cliente extends javax.swing.JFrame {
     private void bneliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bneliminarActionPerformed
         bncancelar.setEnabled(true);
         bnguardar.setEnabled(true);
+        cr.Eliminar(Integer.parseInt(txtid_cliente.getText()));
             Limpiar();
            
     }//GEN-LAST:event_bneliminarActionPerformed
@@ -368,6 +365,15 @@ public class Cliente extends javax.swing.JFrame {
        bnmodificar.setEnabled(true);
        bnguardar.setEnabled(false);
        bneliminar.setEnabled(true);
+       Cliente_i cli = (Cliente_i) cr.getClienteCI(txtcedula.getText());
+       txtid_cliente.setText(Integer.toString(cli.getId_cliente()));
+       txtcedula.setText(cli.getCedula());
+       txtnombre.setText(cli.getNombre());
+       txtdireccion.setText(cli.getDireccion());
+       txttelefono.setText(cli.getTelefono());
+       cbsexo.setSelectedItem(cli.getSexo());
+       cbciudad.setSelectedItem(cli.getCiudad().getNombre());
+       
 
     }//GEN-LAST:event_bnconsultarActionPerformed
 

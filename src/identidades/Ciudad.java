@@ -17,6 +17,9 @@ public class Ciudad {
         this.id_ciudad= id_ciudad;
         this.nombre= nomciu;
     }
+    public Ciudad ( String nomciu){       
+        this.nombre= nomciu;
+    }
 
     public int getId_ciudad() {
         return id_ciudad;

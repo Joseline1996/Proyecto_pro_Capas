@@ -19,6 +19,10 @@ public class Login_i {
         this.usuario= user;
         this.contraseña= contra;
     }
+    public Login_i( String user,String contra){       
+        this.usuario= user;
+        this.contraseña= contra;
+    }
 
     public int getId_login() {
         return id_login;
