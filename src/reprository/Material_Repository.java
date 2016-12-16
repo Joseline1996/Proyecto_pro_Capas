@@ -60,7 +60,7 @@ public class Material_Repository {
             
             JOptionPane.showMessageDialog(null,"registro eliminado exitosamente");
             
-            pst.executeQuery();
+            pst.execute();
         }catch(SQLException ex){
             JOptionPane.showMessageDialog(null,ex.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
             ex.printStackTrace();
@@ -70,7 +70,7 @@ public class Material_Repository {
     public Material_i getMaterialNombre(String nombre){
         Material_i mate = null;         
      try{
-         PreparedStatement pst = cn.prepareStatement("Select from materiales where nombre=?");
+         PreparedStatement pst = cn.prepareStatement("Select * from materiales where nombre=?");
             pst.setString(1, nombre);
             pst.execute();        
             ResultSet rs= pst.executeQuery();

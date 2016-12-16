@@ -81,7 +81,7 @@ public class Empleado_Repository {
     public Empleado_i getEmpleadoCI(String cedula){
         Empleado_i emp = null;         
      try{
-         PreparedStatement pst = cn.prepareStatement("Select from empleados where cedula=?");
+         PreparedStatement pst = cn.prepareStatement("Select empleados.*, Ciudades.* From empleados INNER JOIN ciudades ON empleados.id_ciudad = ciudades.id_ciudad Where empleados.cedula = ?");
             pst.setString(1, cedula);
             pst.execute();        
             ResultSet rs= pst.executeQuery();

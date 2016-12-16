@@ -54,7 +54,7 @@ public class Cliente_Repository {
                pst.setString(4, cliente.getTelefono());
                pst.setString(5, cliente.getSexo());
                pst.setInt(6, cliente.getCiudad().getId_ciudad());
-               
+               pst.setInt(7, id);
                               
                JOptionPane.showMessageDialog(null,"registro modificado exitosamente");
                 
@@ -83,13 +83,13 @@ public class Cliente_Repository {
     public Cliente_i getClienteCI(String cedula){
         Cliente_i cl = null;         
      try{
-         PreparedStatement pst = cn.prepareStatement("Select from clientes where cedula=?");
+         PreparedStatement pst = cn.prepareStatement("Select clientes.*, Ciudades.* From clientes INNER JOIN ciudades ON clientes.id_ciudad = ciudades.id_ciudad Where clientes.cedula = ?");
             pst.setString(1, cedula);
             pst.execute();        
             ResultSet rs= pst.executeQuery();
            while(rs.next()){
                Ciudad ciudad = new Ciudad(rs.getInt(8),rs.getString(9));
-               cl = new Cliente_i(rs.getInt(1),rs.getString(2),rs.getString(3),rs.getString(4),rs.getString(5),rs.getNString(6),ciudad);                                          
+               cl = new Cliente_i(rs.getInt(1),rs.getString(2),rs.getString(3),rs.getString(4),rs.getString(5),rs.getString(6),ciudad);                                          
            }
            return cl;
         }catch(SQLException ex){

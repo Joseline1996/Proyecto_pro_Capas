@@ -6,7 +6,7 @@
 package reprository;
 
 import conexion.conexion;
-import identidades.Tipo_Calzado_i;
+import identidades.Talla_i;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -17,14 +17,15 @@ import javax.swing.JOptionPane;
  *
  * @author Administrador
  */
-public class Tipo_Repository {
-    conexion conex = new conexion ();
-    Connection cn = conex.conexion();
-    public void Ingresar(Tipo_Calzado_i tipo ){
+public class Talla_Repository {
+   conexion conex = new conexion();
+   Connection cn = conex.conexion();
+   
+    public void Ingresar(Talla_i talla ){
         PreparedStatement pst = null;
             try{
-               pst = cn.prepareStatement("INSERT INTO tipos_calzado(nombre)VALUES(?)");               
-               pst.setString(1,tipo.getNombre());
+               pst = cn.prepareStatement("INSERT INTO tallas(numero)VALUES(?)");               
+               pst.setInt(1,talla.getNumero());
                               
                JOptionPane.showMessageDialog(null,"registro grabado exitosamente");
                 
@@ -35,11 +36,11 @@ public class Tipo_Repository {
               ex.printStackTrace();
             }
     }
-    public void Modificar(int id,Tipo_Calzado_i tipo){
+    public void Modificar(int id,Talla_i talla){
         PreparedStatement pst = null;
             try{
-               pst = cn.prepareStatement("UPDATE tipos_calzado set nombre=? where codigo=?");               
-               pst.setString(1,tipo.getNombre());
+               pst = cn.prepareStatement("UPDATE tallas set numero=? where id_talla=?");               
+               pst.setInt(1,talla.getNumero());
                pst.setInt(2, id);
                               
                JOptionPane.showMessageDialog(null,"registro modificado exitosamente");
@@ -54,34 +55,34 @@ public class Tipo_Repository {
     public void Eliminar(int id){
         PreparedStatement pst = null;
         try{
-            pst=cn.prepareStatement("DELETE from tipos_calzado where codigo=?");
+            pst=cn.prepareStatement("DELETE from tallas where id_talla=?");
             pst.setInt(1, id);
             
             JOptionPane.showMessageDialog(null,"registro eliminado exitosamente");
             
-            pst.execute();
+            pst.executeQuery();
         }catch(SQLException ex){
             JOptionPane.showMessageDialog(null,ex.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
             ex.printStackTrace();
            
         }
     }
-    public Tipo_Calzado_i getTipoNombre(String nombre){
-        Tipo_Calzado_i tip = null;         
+    public Talla_i getTallaNumero(int numero){
+        Talla_i ta = null;         
      try{
-         PreparedStatement pst = cn.prepareStatement("Select * from tipos_calzado where nombre=?");
-            pst.setString(1, nombre);
+         PreparedStatement pst = cn.prepareStatement("Select * from tallas where numero=?");
+            pst.setInt(1, numero);
             pst.execute();        
             ResultSet rs= pst.executeQuery();
            while(rs.next()){
-               tip = new Tipo_Calzado_i(rs.getInt(1),rs.getString(2));                                          
+               ta = new Talla_i(rs.getInt(1),rs.getInt(2));                                          
            }
         }catch(SQLException ex){
            JOptionPane.showMessageDialog(null, ex.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
             ex.printStackTrace();
         }
-     return tip;
+     return ta;
     }
-    
+   
     
 }

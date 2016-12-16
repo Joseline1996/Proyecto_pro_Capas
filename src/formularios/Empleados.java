@@ -86,6 +86,7 @@ public class Empleados extends javax.swing.JFrame {
         txtid = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
+        jLabel10 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(700, 600));
@@ -232,13 +233,18 @@ public class Empleados extends javax.swing.JFrame {
         getContentPane().add(txtid);
         txtid.setBounds(150, 80, 36, 30);
 
+        jLabel9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/empleados.jpg"))); // NOI18N
         jLabel9.setText("jLabel9");
         getContentPane().add(jLabel9);
-        jLabel9.setBounds(370, 290, 34, 14);
+        jLabel9.setBounds(-10, 0, 730, 530);
 
         jLabel8.setText("ID_EMPLEADO:");
         getContentPane().add(jLabel8);
         jLabel8.setBounds(50, 90, 80, 20);
+
+        jLabel10.setText("jLabel10");
+        getContentPane().add(jLabel10);
+        jLabel10.setBounds(540, 130, 40, 14);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -295,7 +301,7 @@ public class Empleados extends javax.swing.JFrame {
 
     private void bnguardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bnguardarActionPerformed
         Ciudad ciu = ciure.getCiudadNombre(cbciudad.getSelectedItem().toString());
-        Empleado_i emple = emre.getEmpleadoCI(txtcedula.getText(),txtnombre.getText(),txtdireccion.getText(),txttelefono.getText(),cbsexo.getSelectedItem().toString(),ciu);
+        Empleado_i emple = new Empleado_i(txtcedula.getText(),txtnombre.getText(),txtdireccion.getText(),txttelefono.getText(),cbsexo.getSelectedItem().toString(),ciu);
         emre.Ingresar(emple);
         Limpiar();        
    
@@ -306,7 +312,7 @@ public class Empleados extends javax.swing.JFrame {
         bncancelar.setEnabled(true);
         bnguardar.setEnabled(true);
         Ciudad ciu = ciure.getCiudadNombre(cbciudad.getSelectedItem().toString());
-        Empleado_i emple = emre.getEmpleadoCI(txtcedula.getText(),txtnombre.getText(),txtdireccion.getText(),txttelefono.getText(),cbsexo.getSelectedItem().toString(),ciu);
+        Empleado_i emple = new Empleado_i(txtcedula.getText(),txtnombre.getText(),txtdireccion.getText(),txttelefono.getText(),cbsexo.getSelectedItem().toString(),ciu);
         emre.Modificar(Integer.parseInt(txtid.getText()), emple);
         Limpiar();
         
@@ -414,6 +420,7 @@ public class Empleados extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> cbciudad;
     private javax.swing.JComboBox<String> cbsexo;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;

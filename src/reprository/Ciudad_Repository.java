@@ -70,7 +70,7 @@ public class Ciudad_Repository {
     public Ciudad getCiudadNombre(String nombre){
         Ciudad ciu = null;         
      try{
-         PreparedStatement pst = cn.prepareStatement("Select from ciudades where nombre=?");
+         PreparedStatement pst = cn.prepareStatement("Select * from ciudades where nombre=?");
             pst.setString(1, nombre);
             pst.execute();        
             ResultSet rs= pst.executeQuery();

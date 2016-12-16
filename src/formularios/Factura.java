@@ -5,6 +5,7 @@
  */
 package formularios;
 import conexion.conexion;
+import identidades.Cliente_i;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -12,15 +13,19 @@ import java.sql.Statement;
 import java.text.MessageFormat;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import reprository.Cliente_Repository;
 
 /**
  *
  * @author Administrador
  */
 public class Factura extends javax.swing.JFrame {
-DefaultTableModel model=new DefaultTableModel();
 
-int cont = 0;
+    DefaultTableModel model=new DefaultTableModel(); 
+    conexion conecta = new conexion();
+    Connection cn = conecta.conexion();
+     Cliente_Repository cr = new Cliente_Repository();
+     int cont = 0;
 
     /**
      * Creates new form Factura
@@ -29,9 +34,7 @@ int cont = 0;
         initComponents();
        
         this.setLocationRelativeTo(null);
-        this.setResizable(false);
-        
-        
+        this.setResizable(false);               
     }
     public void Limpiar(){
         txtcedula.setText("");
@@ -42,9 +45,7 @@ int cont = 0;
         txtpre.setText("");
         txtcant.setText("");
         txttotal.setText("");
-    }
-    
-
+    }    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -75,7 +76,6 @@ int cont = 0;
         jScrollPane2 = new javax.swing.JScrollPane();
         tab = new javax.swing.JTable();
         bncancelar = new javax.swing.JButton();
-        bnconsultar = new javax.swing.JButton();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         txtpre = new javax.swing.JTextField();
@@ -138,7 +138,7 @@ int cont = 0;
             }
         });
         getContentPane().add(bncalcularfactura);
-        bncalcularfactura.setBounds(290, 520, 160, 70);
+        bncalcularfactura.setBounds(280, 520, 160, 70);
 
         jLabel16.setFont(new java.awt.Font("Times New Roman", 0, 12)); // NOI18N
         jLabel16.setText("COMERCIAL \"YENIS\"");
@@ -282,15 +282,6 @@ int cont = 0;
         getContentPane().add(bncancelar);
         bncancelar.setBounds(690, 520, 150, 70);
 
-        bnconsultar.setText("...");
-        bnconsultar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                bnconsultarActionPerformed(evt);
-            }
-        });
-        getContentPane().add(bnconsultar);
-        bnconsultar.setBounds(320, 110, 60, 30);
-
         jLabel7.setFont(new java.awt.Font("Times New Roman", 0, 12)); // NOI18N
         jLabel7.setText("PRECIO:");
         getContentPane().add(jLabel7);
@@ -333,20 +324,15 @@ int cont = 0;
             tab.print(JTable.PrintMode.FIT_WIDTH, header, footer);
         }catch (java.awt.print.PrinterException e){
             System.err.format("Error, no se puede imprimir %s %n ", e.getMessage());
-        }
-           
+        }           
     }//GEN-LAST:event_bnimprimirActionPerformed
 
     private void bncalcularfacturaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bncalcularfacturaActionPerformed
       int precio,cantidad,c =1;
         precio = Integer.parseInt(txtpre.getText());
         cantidad=Integer.parseInt(txtcant.getText());
-        txttotal.setText(String.valueOf(precio*cantidad));
-       
-      
-       txtnumfactura.setText(String.valueOf(c++));
-       
-         
+        txttotal.setText(String.valueOf(precio*cantidad));             
+       txtnumfactura.setText(String.valueOf(c++));                
     }//GEN-LAST:event_bncalcularfacturaActionPerformed
 
     private void txtnombreKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtnombreKeyTyped
@@ -393,20 +379,15 @@ int cont = 0;
     }//GEN-LAST:event_txttotalKeyTyped
 
     private void txtnumfacturaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtnumfacturaActionPerformed
-      
-       
-       
+                    
     }//GEN-LAST:event_txtnumfacturaActionPerformed
 
     private void txtnombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtnombreActionPerformed
-         
-        
-        
+                         
     }//GEN-LAST:event_txtnombreActionPerformed
 
     private void txtcedulaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtcedulaActionPerformed
-       
-       
+              
     }//GEN-LAST:event_txtcedulaActionPerformed
 
     private void bncancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bncancelarActionPerformed
@@ -416,11 +397,6 @@ int cont = 0;
     private void txttotalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txttotalActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txttotalActionPerformed
-
-    private void bnconsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bnconsultarActionPerformed
-        mostrarDatos(txtcedula.getText());
-       
-    }//GEN-LAST:event_bnconsultarActionPerformed
 
     private void txtpreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtpreActionPerformed
         // TODO add your handling code here:
@@ -438,22 +414,7 @@ int cont = 0;
         // TODO add your handling code here:
     }//GEN-LAST:event_txtfechaActionPerformed
 
-     conexion conecta = new conexion();
-        Connection cn = conecta.conexion();
-     public void mostrarDatos(String valor){
-     String sql ="";
-     sql="select * from clientes where cedula='"+ valor + "'";
-     try{
-           Statement st = cn.createStatement();
-           ResultSet rs= st.executeQuery(sql);
-           while(rs.next()){
-                    
-              txtnombre.setText(rs.getString(3));
-               }
-        }catch(SQLException ex){
-           System.out.println(ex.getMessage());
-        }
-    }
+     
      
     /**
      * @param args the command line arguments
@@ -493,7 +454,6 @@ int cont = 0;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton bncalcularfactura;
     private javax.swing.JButton bncancelar;
-    private javax.swing.JButton bnconsultar;
     public javax.swing.JButton bnimprimir;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel14;

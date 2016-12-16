@@ -6,12 +6,14 @@
 package formularios;
 
 import conexion.conexion;
+import identidades.Talla_i;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import javax.swing.JOptionPane;
+import reprository.Talla_Repository;
 
 
 /**
@@ -19,6 +21,9 @@ import javax.swing.JOptionPane;
  * @author Administrador
  */
 public class Talla extends javax.swing.JFrame {
+    conexion conecta = new conexion();
+    Connection cn = conecta.conexion();
+    Talla_Repository tr = new Talla_Repository();
 
     /**
      * Creates new form Talla
@@ -28,6 +33,10 @@ public class Talla extends javax.swing.JFrame {
         Limpiar();
         this.setLocationRelativeTo(null);
         this.setResizable(false);
+    }
+    private void Limpiar() {        
+        txtid.setText("");
+        txtnumero.setText("");        
     }
 
     /**
@@ -154,7 +163,7 @@ public class Talla extends javax.swing.JFrame {
         jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/tipo1.jpg"))); // NOI18N
         jLabel4.setText("jLabel4");
         getContentPane().add(jLabel4);
-        jLabel4.setBounds(0, 0, 660, 380);
+        jLabel4.setBounds(0, 0, 660, 330);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -179,18 +188,10 @@ public class Talla extends javax.swing.JFrame {
     }//GEN-LAST:event_txtnumeroKeyTyped
 
     private void bnguardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bnguardarActionPerformed
-        PreparedStatement pst = null;
-            try{
-               pst = cn.prepareStatement("INSERT INTO tallas(numero)VALUES(?)");
-               
-               pst.setInt(1, Integer.parseInt(txtnumero.getText()));
-               
-               JOptionPane.showMessageDialog(null,"registro grabado exitosamente");
-                Limpiar();
-                pst.executeUpdate();                    
-            }catch (SQLException ex){
-                System.out.println(ex.getMessage());
-    }
+        Talla_i ta = new Talla_i (Integer.parseInt(txtnumero.getText())); 
+        tr.Ingresar(ta);
+        Limpiar();
+                
    
     }//GEN-LAST:event_bnguardarActionPerformed
 
@@ -201,69 +202,35 @@ public class Talla extends javax.swing.JFrame {
     private void bnmodificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bnmodificarActionPerformed
          bnguardar.setEnabled(true);
         bncancelar.setEnabled(true);
-        PreparedStatement pst = null;
-        try{
-            pst=cn.prepareStatement("UPDATE tallas set numero=? where id_talla="+txtid.getText());
-            
-            pst.setInt(1, Integer.parseInt(txtnumero.getText()));
-                                   
-            JOptionPane.showMessageDialog(null, "registro modificado exitosamente");
+        Talla_i ta = new Talla_i (Integer.parseInt(txtnumero.getText()));
+        tr.Modificar(Integer.parseInt(txtid.getText()), ta);
             Limpiar();
-            pst.executeQuery();
-        }catch(SQLException ex){
-            System.out.println(ex.getMessage());
-        }
+            
     }//GEN-LAST:event_bnmodificarActionPerformed
 
     private void bneliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bneliminarActionPerformed
         bncancelar.setEnabled(true);
         bnguardar.setEnabled(true);
-        PreparedStatement pst = null;
-        try{
-            pst=cn.prepareStatement("delete from tallas where id_talla=?");
-            pst.setInt(1, Integer.parseInt(txtid.getText()));
-            
-            JOptionPane.showMessageDialog(null,"registro eliminadfo exitosamente");
+        tr.Eliminar(Integer.parseInt(txtid.getText()));
             Limpiar();
-            pst.executeQuery();
-        }catch(SQLException ex){
-            System.out.println(ex.getMessage());
-        }
+            
     }//GEN-LAST:event_bneliminarActionPerformed
 
     private void bnconsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bnconsultarActionPerformed
-       mostrarDatos(txtnumero.getText());
+       
        bnmodificar.setEnabled(true);
        bnguardar.setEnabled(false);
        bneliminar.setEnabled(true);
+       Talla_i tal = (Talla_i)tr.getTallaNumero(Integer.parseInt(txtnumero.getText()));
+       txtid.setText(Integer.toString(tal.getId_talla()));
+       txtnumero.setText(Integer.toString(tal.getNumero()));
 
     }//GEN-LAST:event_bnconsultarActionPerformed
 
-    conexion conecta = new conexion();
-    Connection cn = conecta.conexion();
     
     
-    private void Limpiar() {
-        
-        txtid.setText("");
-        txtnumero.setText("");
-        
-    }
-    public void mostrarDatos(String valor){
-     String sql ="";
-     sql="select * from tallas where numero='"+ valor + "'";
-     try{
-           Statement st = cn.createStatement();
-           ResultSet rs= st.executeQuery(sql);
-           while(rs.next()){
-               txtid.setText(rs.getString(1));
-               txtnumero.setText(rs.getString(2));             
-              
-           }
-        }catch(SQLException ex){
-           System.out.println(ex.getMessage());
-        }
-    }
+    
+    
     /**
      * @param args the command line arguments
      */

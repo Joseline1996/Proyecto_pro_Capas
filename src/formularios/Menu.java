@@ -40,6 +40,7 @@ public class Menu extends javax.swing.JFrame {
         bnmarca = new javax.swing.JButton();
         bntipo_calzado = new javax.swing.JButton();
         login = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -90,7 +91,7 @@ public class Menu extends javax.swing.JFrame {
             }
         });
         getContentPane().add(bnsalir);
-        bnsalir.setBounds(580, 380, 100, 60);
+        bnsalir.setBounds(580, 300, 100, 60);
 
         bnregistro.setFont(new java.awt.Font("Times New Roman", 0, 12)); // NOI18N
         bnregistro.setText("REGISTROS");
@@ -148,10 +149,19 @@ public class Menu extends javax.swing.JFrame {
         getContentPane().add(login);
         login.setBounds(350, 150, 140, 40);
 
+        jButton1.setText("MATERIALES");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jButton1);
+        jButton1.setBounds(580, 380, 110, 60);
+
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/menu_1.jpg"))); // NOI18N
         jLabel2.setText("jLabel2");
         getContentPane().add(jLabel2);
-        jLabel2.setBounds(-50, -10, 790, 540);
+        jLabel2.setBounds(0, -10, 750, 530);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -200,6 +210,12 @@ public class Menu extends javax.swing.JFrame {
         this.setVisible(false);
     }//GEN-LAST:event_bntipo_calzadoActionPerformed
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        new Material().setVisible(true);
+        this.setVisible(false);
+    }//GEN-LAST:event_jButton1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -245,6 +261,7 @@ public class Menu extends javax.swing.JFrame {
     private javax.swing.JButton bnsalir;
     private javax.swing.JButton bntalla;
     private javax.swing.JButton bntipo_calzado;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     public static javax.swing.JLabel login;

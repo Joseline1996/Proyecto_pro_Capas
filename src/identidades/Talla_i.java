@@ -11,11 +11,15 @@ package identidades;
  */
 public class Talla_i {
     private int id_talla;
-    private String nombre;
+    private int numero;
     
-    public Talla_i(int id_talla,String nomtalla){
+    public Talla_i(int id_talla,int numtalla){
         this.id_talla= id_talla;
-        this.nombre= nomtalla;
+        this.numero= numtalla;
+    }
+
+    public Talla_i(int numtalla){
+       this.numero= numtalla; 
     }
 
     public int getId_talla() {
@@ -26,12 +30,12 @@ public class Talla_i {
         this.id_talla = id_talla;
     }
 
-    public String getNombre() {
-        return nombre;
+    public int getNumero() {
+        return numero;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public void setNumero(int numero) {
+        this.numero = numero;
     }
     
 }

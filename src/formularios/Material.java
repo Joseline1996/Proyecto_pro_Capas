@@ -59,17 +59,27 @@ public class Material extends javax.swing.JFrame {
         bnmodificar = new javax.swing.JButton();
         bneliminar = new javax.swing.JButton();
         bncancelar = new javax.swing.JButton();
+        jLabel4 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setMinimumSize(new java.awt.Dimension(720, 450));
+        setPreferredSize(new java.awt.Dimension(0, 0));
+        getContentPane().setLayout(null);
 
         jLabel1.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
         jLabel1.setText("MANTENIMIENTO DE MATERIALES:");
+        getContentPane().add(jLabel1);
+        jLabel1.setBounds(199, 69, 254, 23);
 
         jLabel2.setFont(new java.awt.Font("Times New Roman", 0, 12)); // NOI18N
         jLabel2.setText("ID_MATERIAL:");
+        getContentPane().add(jLabel2);
+        jLabel2.setBounds(50, 123, 98, 27);
 
         jLabel3.setFont(new java.awt.Font("Times New Roman", 0, 12)); // NOI18N
         jLabel3.setText("NOMBRE:");
+        getContentPane().add(jLabel3);
+        jLabel3.setBounds(42, 179, 70, 20);
 
         txtid.setEditable(false);
         txtid.addActionListener(new java.awt.event.ActionListener() {
@@ -82,6 +92,8 @@ public class Material extends javax.swing.JFrame {
                 txtidKeyPressed(evt);
             }
         });
+        getContentPane().add(txtid);
+        txtid.setBounds(158, 121, 66, 30);
 
         bnconsultar.setText("...");
         bnconsultar.addActionListener(new java.awt.event.ActionListener() {
@@ -89,6 +101,8 @@ public class Material extends javax.swing.JFrame {
                 bnconsultarActionPerformed(evt);
             }
         });
+        getContentPane().add(bnconsultar);
+        bnconsultar.setBounds(279, 125, 60, 23);
 
         txtnombre.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -100,6 +114,8 @@ public class Material extends javax.swing.JFrame {
                 txtnombreKeyTyped(evt);
             }
         });
+        getContentPane().add(txtnombre);
+        txtnombre.setBounds(158, 175, 173, 29);
 
         bnguardar.setFont(new java.awt.Font("Times New Roman", 0, 12)); // NOI18N
         bnguardar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/guardar1.png"))); // NOI18N
@@ -109,6 +125,8 @@ public class Material extends javax.swing.JFrame {
                 bnguardarActionPerformed(evt);
             }
         });
+        getContentPane().add(bnguardar);
+        bnguardar.setBounds(42, 261, 140, 56);
 
         bnmodificar.setFont(new java.awt.Font("Times New Roman", 0, 12)); // NOI18N
         bnmodificar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/modificar.jpg"))); // NOI18N
@@ -118,6 +136,8 @@ public class Material extends javax.swing.JFrame {
                 bnmodificarActionPerformed(evt);
             }
         });
+        getContentPane().add(bnmodificar);
+        bnmodificar.setBounds(200, 261, 160, 56);
 
         bneliminar.setFont(new java.awt.Font("Times New Roman", 0, 12)); // NOI18N
         bneliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/eliminar.jpg"))); // NOI18N
@@ -127,6 +147,8 @@ public class Material extends javax.swing.JFrame {
                 bneliminarActionPerformed(evt);
             }
         });
+        getContentPane().add(bneliminar);
+        bneliminar.setBounds(378, 261, 150, 56);
 
         bncancelar.setFont(new java.awt.Font("Times New Roman", 0, 12)); // NOI18N
         bncancelar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/cancelar.png"))); // NOI18N
@@ -136,64 +158,13 @@ public class Material extends javax.swing.JFrame {
                 bncancelarActionPerformed(evt);
             }
         });
+        getContentPane().add(bncancelar);
+        bncancelar.setBounds(546, 259, 150, 60);
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(42, 42, 42)
-                        .addComponent(bnguardar, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(bnmodificar, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(bneliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(bncancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(199, 199, 199)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 254, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(50, 50, 50)
-                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(42, 42, 42)
-                                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtnombre, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(txtid, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(55, 55, 55)
-                                .addComponent(bnconsultar, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(69, 69, 69)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(29, 29, 29)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtid, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(bnconsultar))
-                .addGap(24, 24, 24)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtnombre, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(55, 55, 55)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(bnguardar, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(bnmodificar, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(bneliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(bncancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(69, Short.MAX_VALUE))
-        );
+        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/materiales.jpg"))); // NOI18N
+        jLabel4.setText("jLabel4");
+        getContentPane().add(jLabel4);
+        jLabel4.setBounds(-15, -14, 740, 460);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -308,6 +279,7 @@ public class Material extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JTextField txtid;
     private javax.swing.JTextField txtnombre;
     // End of variables declaration//GEN-END:variables

@@ -29,6 +29,16 @@ public class Producto_i {
         this.material= mate;
         this.tipo= tipo;
     }
+    public Producto_i( String pre,String cant,String color,Talla_i talla,Marca_i marca,Material_i mate,Tipo_Calzado_i tipo){        
+        this.precio= pre;
+        this.cantidad= cant;
+        this.color= color;
+        this.talla= talla;
+        this.marca=marca;
+        this.material= mate;
+        this.tipo= tipo;
+    }
+
 
     public int getId_producto() {
         return id_producto;

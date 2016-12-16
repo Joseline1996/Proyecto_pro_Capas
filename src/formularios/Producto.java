@@ -5,6 +5,11 @@
  */
 package formularios;
 import conexion.conexion;
+import identidades.Marca_i;
+import identidades.Material_i;
+import identidades.Producto_i;
+import identidades.Talla_i;
+import identidades.Tipo_Calzado_i;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -13,6 +18,11 @@ import java.sql.Statement;
 
 
 import javax.swing.JOptionPane;
+import reprository.Marca_Repository;
+import reprository.Material_Repository;
+import reprository.Producto_Repository;
+import reprository.Talla_Repository;
+import reprository.Tipo_Repository;
 
 
 /**
@@ -22,7 +32,11 @@ import javax.swing.JOptionPane;
 public class Producto extends javax.swing.JFrame {
     conexion conecta = new conexion();
     Connection cn = conecta.conexion();
-    
+    Producto_Repository pr = new Producto_Repository();
+    Talla_Repository tr = new Talla_Repository();
+    Marca_Repository mr= new Marca_Repository();
+    Material_Repository mare = new Material_Repository();
+    Tipo_Repository tre = new Tipo_Repository();
     
 
     /**
@@ -45,8 +59,7 @@ public class Producto extends javax.swing.JFrame {
         this.setResizable(false);       
         txttalla.requestFocus();
         txttalla.setVisible(false);
-        Factura abrir= new Factura();
-        abrir.setVisible(true);
+        
     }
     public void cargarcbTalla(){
         String sql= "Select * from tallas";
@@ -111,6 +124,7 @@ public class Producto extends javax.swing.JFrame {
         
         txtprecio.setText("");
         txtcantidad.setText("");
+        cbcolor.setSelectedItem(-1);
         cbtalla.setSelectedItem(-1);
         cbmarca.setSelectedItem(-1);
         cbmaterial.setSelectedItem(-1);
@@ -222,6 +236,11 @@ public class Producto extends javax.swing.JFrame {
         getContentPane().add(cbcolor);
         cbcolor.setBounds(150, 200, 108, 30);
 
+        cbtalla.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbtallaActionPerformed(evt);
+            }
+        });
         getContentPane().add(cbtalla);
         cbtalla.setBounds(150, 260, 108, 30);
 
@@ -369,93 +388,23 @@ public class Producto extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void bnguardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bnguardarActionPerformed
-       PreparedStatement pst = null;
-            try{
-               pst = cn.prepareStatement("INSERT INTO producto(precio, cantidad, color,id_talla,id_marca,id_material,codigo)VALUES(?,?,?,?,?,?,?)");
-               
-               pst.setString(1, txtprecio.getText().toUpperCase());
-               pst.setString(2, txtcantidad.getText().toUpperCase());               
-               pst.setString(3, cbcolor.getSelectedItem().toString());
-               pst.setInt(4, cbtalla.getSelectedIndex()+1);
-               pst.setInt(5, cbmarca.getSelectedIndex()+1);
-               pst.setInt(6, cbmaterial.getSelectedIndex()+1);
-               pst.setInt(7, cbtipocalzado.getSelectedIndex()+1);
-               Factura.txtpre.setText(txtprecio.getText());
-               Factura.txtcant.setText(txtcantidad.getText());
-               JOptionPane.showMessageDialog(null,"registro grabado exitosamente");
-               
-                Limpiar();
-                pst.executeUpdate();
-      
-            }catch (SQLException ex){
-                System.out.println(ex.getMessage());         
-        }
+        Marca_i mar = mr.getMarcaNombre(cbmarca.getSelectedItem().toString());
+        Material_i mate = mare.getMaterialNombre(cbmaterial.getSelectedItem().toString());
+        Talla_i ta = tr.getTallaNumero(Integer.parseInt(cbtalla.getSelectedItem().toString()));
+        Tipo_Calzado_i ti = tre.getTipoNombre(cbtipocalzado.getSelectedItem().toString());
+        Producto_i pro = new Producto_i (txtprecio.getText(),txtcantidad.getText(),cbcolor.getSelectedItem().toString(),ta,mar,mate,ti);
+         pr.Ingresar(pro);
+        
+        Factura abrir= new Factura();
+        abrir.setVisible(true);
+        
+        Factura.txtpre.setText(txtprecio.getText());
+        Factura.txtcant.setText(txtcantidad.getText());
+   Limpiar();
+                
     }//GEN-LAST:event_bnguardarActionPerformed
 
-    public void CodigoTalla(){
-              
-        try{
-            
-            PreparedStatement pst = cn.prepareCall("SELECT id_talla FROM tallas WHERE numero = '" + (String)cbtalla.getSelectedItem()+"'" );
-            ResultSet rs = pst.executeQuery();
-            while(rs.next()){
-                txttalla.setText(rs.getString(1));
-            }
-            
-        }
-        catch(SQLException ex){
-            JOptionPane.showMessageDialog(null,ex.getMessage(),"ERROR",JOptionPane.ERROR_MESSAGE);
-            
-        }
-    }
-    public void CodigoMarca(){
-              
-        try{
-            
-            PreparedStatement pst = cn.prepareCall("SELECT id_marca FROM marcas WHERE nombre = '" + (String)cbmarca.getSelectedItem()+"'" );
-            ResultSet rs = pst.executeQuery();
-            while(rs.next()){
-                txtmarca.setText(rs.getString(1));
-            }
-            
-        }
-        catch(SQLException ex){
-            JOptionPane.showMessageDialog(null,ex.getMessage(),"ERROR",JOptionPane.ERROR_MESSAGE);
-            
-        }
-    }
-    public void CodigoMaterial(){
-              
-        try{
-            
-            PreparedStatement pst = cn.prepareCall("SELECT id_material FROM materiales WHERE nombre = '" + (String)cbmaterial.getSelectedItem()+"'" );
-            ResultSet rs = pst.executeQuery();
-            while(rs.next()){
-                txtmaterial.setText(rs.getString(1));
-            }
-            
-        }
-        catch(SQLException ex){
-            JOptionPane.showMessageDialog(null,ex.getMessage(),"ERROR",JOptionPane.ERROR_MESSAGE);
-            
-        }
-    }
-    public void CodigoTipoCalzado(){
-              
-        try{
-            
-            PreparedStatement pst = cn.prepareCall("SELECT codigo FROM tipos_calzado WHERE nombre = '" + (String)cbtipocalzado.getSelectedItem()+"'" );
-            ResultSet rs = pst.executeQuery();
-            while(rs.next()){
-                txttipo.setText(rs.getString(1));
-            }
-            
-        }
-        catch(SQLException ex){
-            JOptionPane.showMessageDialog(null,ex.getMessage(),"ERROR",JOptionPane.ERROR_MESSAGE);
-            
-        }
-    }
+    
     private void bncancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bncancelarActionPerformed
        new Menu().setVisible(true);
               this.setVisible(false);
@@ -506,47 +455,38 @@ public class Producto extends javax.swing.JFrame {
     private void bnmodificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bnmodificarActionPerformed
         bnguardar.setEnabled(true);
         bncancelar.setEnabled(true);
-        PreparedStatement pst = null;
-        try{
-            pst=cn.prepareStatement("UPDATE producto set precio=?,cantidad=?,color=?,id_talla=?,id_marca=?,id_material=?,codigo=? where id_producto="+ txtid.getText());
-            
-            pst.setString(1,txtprecio.getText().toUpperCase());
-            pst.setString(2,txtcantidad.getText().toUpperCase());
-            pst.setString(3, cbcolor.getSelectedItem().toString());
-            pst.setInt(4, cbtalla.getSelectedIndex()+1);
-            pst.setInt(5, cbmarca.getSelectedIndex()+1);
-            pst.setInt(6, cbmaterial.getSelectedIndex()+1);
-            pst.setInt(7, cbtipocalzado.getSelectedIndex()+1);
-            
-            JOptionPane.showMessageDialog(null, "registro modificado exitosamente");
+         Marca_i mar = mr.getMarcaNombre(cbmarca.getSelectedItem().toString());
+        Material_i mate = mare.getMaterialNombre(cbmaterial.getSelectedItem().toString());
+        Talla_i ta = tr.getTallaNumero(Integer.parseInt(cbtalla.getSelectedItem().toString()));
+        Tipo_Calzado_i ti = tre.getTipoNombre(cbtipocalzado.getSelectedItem().toString());
+        Producto_i pro = new Producto_i (txtprecio.getText(),txtcantidad.getText(),cbcolor.getSelectedItem().toString(),ta,mar,mate,ti);
+        pr.Modificar(Integer.parseInt(txtid.getText()), pro);
             Limpiar();
-            pst.executeQuery();
-        }catch(SQLException ex){
-            System.out.println(ex.getMessage());
-        }
+           
     }//GEN-LAST:event_bnmodificarActionPerformed
 
     private void bneliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bneliminarActionPerformed
         bncancelar.setEnabled(true);
         bnguardar.setEnabled(true); 
-        PreparedStatement pst = null;
-        try{
-            pst=cn.prepareStatement("delete from producto where id_producto=?");
-            pst.setInt(1, Integer.parseInt(txtid.getText()));
-            
-            JOptionPane.showMessageDialog(null,"registro eliminado exitosamente");
+        pr.Eliminar(Integer.parseInt(txtid.getText()));
             Limpiar();
-            pst.executeQuery();
-        }catch(SQLException ex){
-            System.out.println(ex.getMessage());
-        }
+           
     }//GEN-LAST:event_bneliminarActionPerformed
 
     private void bnconsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bnconsultarActionPerformed
-        mostrarDatos(txtid.getText());
+        
        bnmodificar.setEnabled(true);
        bnguardar.setEnabled(false);
        bneliminar.setEnabled(true);
+       Producto_i product = (Producto_i)pr.getProducto(txtprecio.getText());
+       txtid.setText(Integer.toString(product.getId_producto()));
+       txtprecio.setText(product.getPrecio());
+       txtcantidad.setText(product.getCantidad());
+       cbcolor.setSelectedItem(product.getColor());
+       cbtalla.setSelectedItem(product.getTalla().getNumero());
+       cbmarca.setSelectedItem(product.getMarca().getNombre());
+       cbmaterial.setSelectedItem(product.getMaterial().getNombre());
+       cbtipocalzado.setSelectedItem(product.getTipo().getNombre());
 
     }//GEN-LAST:event_bnconsultarActionPerformed
 
@@ -558,79 +498,13 @@ public class Producto extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtidActionPerformed
 
+    private void cbtallaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbtallaActionPerformed
+        // TODO add your handling code here:
+      
+    }//GEN-LAST:event_cbtallaActionPerformed
+
     
-    public void mostrarDatos(String valor){
-     String sql ="";
-     sql="select * from producto where id_producto='"+ valor + "'";
-     try{
-           Statement st = cn.createStatement();
-           ResultSet rs= st.executeQuery(sql);
-           while(rs.next()){
-               txtid.setText(rs.getString(1));
-               txtprecio.setText(rs.getString(2));             
-              txtcantidad.setText(rs.getString(3));
-              cbcolor.setSelectedItem(rs.getString(4));
-              txttalla.setText(rs.getString(5));
-              txtmarca.setText(rs.getString(6));
-              txtmaterial.setText(rs.getString(7));
-              txttipo.setText(rs.getString(8));
-              llenarTalla(txttalla.getText());
-              llenarMarca(txtmarca.getText());
-              llenarMaterial(txtmaterial.getText());
-              llenarTipoCalzado(txttipo.getText());
-           }
-        }catch(SQLException ex){
-        
-        }
-    }
-     public void llenarTalla(String valor){
-      try{
-          Statement st= cn.createStatement();
-          String sql="select * from tallas where id_talla='" + valor + "'";
-          ResultSet rs= st.executeQuery(sql);
-          while(rs.next()){
-              cbtalla.setSelectedItem(rs.getString(2));
-          }
-      }catch(SQLException ex){
-          
-      }
-  }
-     public void llenarMarca(String valor){
-      try{
-          Statement st= cn.createStatement();
-          String sql="select * from marcas where id_marca='" + valor + "'";
-          ResultSet rs= st.executeQuery(sql);
-          while(rs.next()){
-              cbmarca.setSelectedItem(rs.getString(2));
-          }
-      }catch(SQLException ex){
-          
-      }
-  }
-     public void llenarMaterial(String valor){
-      try{
-          Statement st= cn.createStatement();
-          String sql="select * from materiales where id_material='" + valor + "'";
-          ResultSet rs= st.executeQuery(sql);
-          while(rs.next()){
-              cbmaterial.setSelectedItem(rs.getString(2));
-          }
-      }catch(SQLException ex){
-          
-      }
-  }
-     public void llenarTipoCalzado(String valor){
-      try{
-          Statement st= cn.createStatement();
-          String sql="select * from tipo_calzado where codigo='" + valor + "'";
-          ResultSet rs= st.executeQuery(sql);
-          while(rs.next()){
-              cbtipocalzado.setSelectedItem(rs.getString(2));
-          }
-      }catch(SQLException ex){
-          
-      }
-  }
+    
     /**
      * @param args the command line arguments
      */
